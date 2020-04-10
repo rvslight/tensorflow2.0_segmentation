@@ -1,0 +1,59 @@
+#TRAIN_DIR: '_results/resnet18_20200103'
+#TRAIN_DIR: '_results/fastscnn_mv3_light2_bce_dice2_20200204'
+#TRAIN_DIR: '_results/fastscnn_mv3_light3_20200204'
+
+RECIPE: 'mobilenet_v2_gogo'
+TRAIN_DIR: '_results/'
+DATA_DIR: 'D:/pycharm/nailnetPytorch/data'
+FOLD_DF: 'D:/pycharm/nailnetPytorch/data/cv_val100_4559.csv'
+#DATA_DIR: 'membrane/train/'
+#FOLD_DF: 'membrane/cv_val100_4628.csv'
+
+PARALLEL: True
+PRINT_EVERY: 10
+DEBUG: False
+GPU: '0,1'
+
+TRAIN:
+  BATCH_SIZE: 16
+  NUM_WORKERS: 8
+  NUM_EPOCHS: 150 #50
+
+EVAL:
+  BATCH_SIZE: 32
+  NUM_WORKERS: 8
+
+DATA:
+  IMG_H: 256 #256 #640 #512
+  IMG_W: 256 #256 #360 #512 #288
+  RESIZE: True
+#  IMG_H: 256
+#  IMG_W: 144
+
+MODEL:
+  NAME: 'FastSCNN_v3_sj'
+  MULTIPLE: 0.5
+  # smp
+#  ARCHITECTURE: 'Unet'
+#  ENCODER: 'resnet18'
+#  NAME: 'FastSCNN'
+
+LOSS:
+  NAME: 'bce_dice'
+#  FINETUNE_EPOCH: 45
+#  FINETUNE_LOSS: 'binary_lovasz_loss'
+  LABEL_SMOOTHING: False
+
+OPTIMIZER:
+  NAME: 'radam'
+#  LR: 0.001
+  LR: 0.0001
+  PARAMS:
+
+SCHEDULER:
+  NAME: 'multi_step'
+  PARAMS:
+    milestones: [5,30,50,70]
+#    milestones: [5, 60]
+#    milestones: [5, 10]
+    gamma: 0.5
